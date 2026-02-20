@@ -831,7 +831,7 @@
             lofiAudio = new Audio(LOFI_SRC);
             lofiAudio.loop = true;
             lofiAudio.crossOrigin = 'anonymous';
-            lofiAudio.volume = 0.4;
+            lofiAudio.volume = 0.55;
         }
 
         // --- Lo-fi music generator ---
@@ -839,7 +839,7 @@
             if (!audioCtx || lofiNodes) return;
             const ctx = audioCtx;
             const master = ctx.createGain();
-            master.gain.value = 0.12;
+            master.gain.value = 0.04;
             master.connect(ctx.destination);
 
             // Play the actual lo-fi track
@@ -853,7 +853,7 @@
             pad1.type = 'sine'; pad1.frequency.value = 130.81; // C3
             pad2.type = 'sine'; pad2.frequency.value = 196.00; // G3
             const padGain = ctx.createGain();
-            padGain.gain.value = 0.3;
+            padGain.gain.value = 0.15;
             const padFilter = ctx.createBiquadFilter();
             padFilter.type = 'lowpass'; padFilter.frequency.value = 400; padFilter.Q.value = 1;
             pad1.connect(padFilter); pad2.connect(padFilter);
@@ -879,7 +879,7 @@
             const sub = ctx.createOscillator();
             sub.type = 'sine'; sub.frequency.value = 65;
             const subGain = ctx.createGain();
-            subGain.gain.value = 0.15;
+            subGain.gain.value = 0.06;
             const subFilter = ctx.createBiquadFilter();
             subFilter.type = 'lowpass'; subFilter.frequency.value = 120;
             sub.connect(subFilter); subFilter.connect(subGain); subGain.connect(master);
@@ -895,7 +895,7 @@
             const noise = ctx.createBufferSource();
             noise.buffer = noiseBuffer; noise.loop = true;
             const noiseGain = ctx.createGain();
-            noiseGain.gain.value = 0.5;
+            noiseGain.gain.value = 0.2;
             const noiseFilter = ctx.createBiquadFilter();
             noiseFilter.type = 'highpass'; noiseFilter.frequency.value = 1000;
             const noiseFilter2 = ctx.createBiquadFilter();
@@ -910,7 +910,7 @@
                 const tick = ctx.createOscillator();
                 tick.type = 'square'; tick.frequency.value = 6000 + Math.random() * 2000;
                 const tickGain = ctx.createGain();
-                tickGain.gain.setValueAtTime(0.04, ctx.currentTime);
+                tickGain.gain.setValueAtTime(0.015, ctx.currentTime);
                 tickGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
                 const tickFilter = ctx.createBiquadFilter();
                 tickFilter.type = 'bandpass'; tickFilter.frequency.value = 5000;
