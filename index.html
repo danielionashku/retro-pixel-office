@@ -435,12 +435,94 @@
             rect(ledX, 0, 4, 480, '#ff4444'); rect(ledX+1, 0, 2, 480, '#ffffff');
 
             // 5. WALL ART
-            // Left frame — original abstract art
+            // Left frame — nautical / topographic map
             rect(780, 60, 200, 260, '#111'); rect(785, 65, 190, 250, '#d1cbb8');
-            rect(795, 75, 170, 230, '#beb69d');
-            ctx.fillStyle = '#8a8169';
-            ctx.fillRect(810,90,40,50); ctx.fillRect(880,110,30,80); ctx.fillRect(830,180,60,40);
-            ctx.fillRect(910,220,30,20); ctx.fillRect(805,150,15,15); ctx.fillRect(860,240,20,20);
+            rect(795, 75, 170, 230, '#c8c0a8');
+            // Aged paper texture
+            for (let ty = 75; ty < 305; ty += 3) {
+                for (let tx = 795; tx < 965; tx += 3) {
+                    let n = Math.sin(tx*0.7+ty*0.3)*0.5 + Math.cos(tx*0.2-ty*0.5)*0.3;
+                    if (n > 0.3) { ctx.fillStyle = 'rgba(180,170,145,0.3)'; ctx.fillRect(tx,ty,2,2); }
+                    else if (n < -0.4) { ctx.fillStyle = 'rgba(210,200,175,0.2)'; ctx.fillRect(tx,ty,2,2); }
+                }
+            }
+            // Water body (ocean/sea area)
+            ctx.fillStyle = 'rgba(140,170,180,0.35)';
+            ctx.beginPath();
+            ctx.moveTo(795,200); ctx.quadraticCurveTo(830,175,860,190);
+            ctx.quadraticCurveTo(890,210,920,195); ctx.quadraticCurveTo(950,180,965,200);
+            ctx.lineTo(965,305); ctx.lineTo(795,305); ctx.fill();
+            // Deeper water
+            ctx.fillStyle = 'rgba(110,145,160,0.3)';
+            ctx.beginPath();
+            ctx.moveTo(795,230); ctx.quadraticCurveTo(840,215,870,225);
+            ctx.quadraticCurveTo(910,240,940,220); ctx.lineTo(965,235);
+            ctx.lineTo(965,305); ctx.lineTo(795,305); ctx.fill();
+            // Elevation contour lines
+            ctx.lineWidth = 1;
+            // Coastline
+            ctx.strokeStyle = 'rgba(100,90,70,0.6)'; ctx.beginPath();
+            ctx.moveTo(795,200); ctx.quadraticCurveTo(830,175,860,190);
+            ctx.quadraticCurveTo(890,210,920,195); ctx.quadraticCurveTo(950,180,965,200); ctx.stroke();
+            // Inner contours — land elevation layers
+            ctx.strokeStyle = 'rgba(130,120,95,0.4)'; ctx.beginPath();
+            ctx.moveTo(795,185); ctx.quadraticCurveTo(825,162,855,172);
+            ctx.quadraticCurveTo(880,185,910,170); ctx.quadraticCurveTo(945,155,965,175); ctx.stroke();
+            ctx.strokeStyle = 'rgba(140,130,105,0.35)'; ctx.beginPath();
+            ctx.moveTo(795,168); ctx.quadraticCurveTo(820,148,850,155);
+            ctx.quadraticCurveTo(875,165,905,148); ctx.quadraticCurveTo(935,132,965,155); ctx.stroke();
+            ctx.strokeStyle = 'rgba(150,140,115,0.3)'; ctx.beginPath();
+            ctx.moveTo(810,142); ctx.quadraticCurveTo(835,128,860,135);
+            ctx.quadraticCurveTo(885,145,910,130); ctx.quadraticCurveTo(940,118,960,138); ctx.stroke();
+            ctx.strokeStyle = 'rgba(150,140,115,0.25)'; ctx.beginPath();
+            ctx.moveTo(825,122); ctx.quadraticCurveTo(850,110,875,118);
+            ctx.quadraticCurveTo(900,128,925,112); ctx.quadraticCurveTo(945,102,960,118); ctx.stroke();
+            // Peak markers
+            ctx.fillStyle = 'rgba(90,80,60,0.5)';
+            ctx.fillRect(850,108,2,2); ctx.fillRect(848,106,6,1);
+            ctx.fillRect(920,100,2,2); ctx.fillRect(918,98,6,1);
+            // Depth soundings in water
+            ctx.fillStyle = 'rgba(70,90,100,0.4)'; ctx.font = '6px serif';
+            ctx.fillText('12',820,220); ctx.fillText('8',855,235);
+            ctx.fillText('15',900,225); ctx.fillText('6',935,215);
+            ctx.fillText('18',830,260); ctx.fillText('22',880,275);
+            ctx.fillText('10',950,250); ctx.fillText('14',810,285);
+            // Small island
+            ctx.fillStyle = 'rgba(180,170,145,0.5)';
+            ctx.beginPath(); ctx.ellipse(870,250,12,6,0.3,0,Math.PI*2); ctx.fill();
+            ctx.strokeStyle = 'rgba(100,90,70,0.4)'; ctx.beginPath();
+            ctx.ellipse(870,250,12,6,0.3,0,Math.PI*2); ctx.stroke();
+            ctx.strokeStyle = 'rgba(100,90,70,0.25)'; ctx.beginPath();
+            ctx.ellipse(870,250,16,9,0.3,0,Math.PI*2); ctx.stroke();
+            // Compass rose (simple)
+            let cx2=940, cy2=270;
+            ctx.strokeStyle = 'rgba(90,80,60,0.4)'; ctx.lineWidth = 0.8;
+            line(cx2,cy2-12,cx2,cy2+12,'rgba(90,80,60,0.4)',0.8);
+            line(cx2-12,cy2,cx2+12,cy2,'rgba(90,80,60,0.4)',0.8);
+            line(cx2-8,cy2-8,cx2+8,cy2+8,'rgba(90,80,60,0.2)',0.5);
+            line(cx2+8,cy2-8,cx2-8,cy2+8,'rgba(90,80,60,0.2)',0.5);
+            ctx.fillStyle = 'rgba(90,80,60,0.5)'; ctx.font = '5px serif';
+            ctx.fillText('N',cx2-2,cy2-14);
+            // Dotted navigation lines
+            for (let di = 0; di < 40; di++) {
+                let dx = 800 + di * 4, dy = 240 + Math.sin(di*0.3)*8;
+                if (di % 2 === 0) ctx.fillRect(dx, dy, 2, 1);
+            }
+            for (let di = 0; di < 30; di++) {
+                let dx = 820 + di * 4.5, dy = 290 - Math.cos(di*0.25)*6;
+                if (di % 2 === 0) { ctx.fillStyle = 'rgba(70,90,100,0.3)'; ctx.fillRect(dx, dy, 2, 1); }
+            }
+            // Latitude/longitude grid lines (very faint)
+            ctx.strokeStyle = 'rgba(120,110,90,0.12)'; ctx.lineWidth = 0.5;
+            for (let gx = 810; gx < 960; gx += 30) { line(gx,75,gx,305,'rgba(120,110,90,0.12)',0.5); }
+            for (let gy = 90; gy < 300; gy += 25) { line(795,gy,965,gy,'rgba(120,110,90,0.12)',0.5); }
+            // Tiny settlement dots
+            ctx.fillStyle = 'rgba(80,70,50,0.5)';
+            ctx.fillRect(835,160,3,3); ctx.fillRect(900,150,3,3); ctx.fillRect(860,140,2,2);
+            ctx.fillRect(830,100,2,2); ctx.fillRect(910,115,2,2);
+            // Frame edge stain
+            ctx.fillStyle = 'rgba(150,130,100,0.08)';
+            ctx.fillRect(795,75,30,230); ctx.fillRect(935,75,30,230);
 
             // Right frame — B&W stoop scene: two friends, beers, bicycles
             rect(1020, 40, 220, 170, '#111'); rect(1025, 45, 210, 160, '#f0f0f0');
@@ -969,7 +1051,7 @@
         Object.defineProperty(cat, 'meowTimer', {
             get() { return _meowTimer; },
             set(v) {
-                if (v > 0 && _meowTimer === 0) playMeow();
+                // meow sound disabled
                 _meowTimer = v;
             }
         });
